@@ -38,3 +38,21 @@ app.get('/api/oi-data', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+app.get('/api/oi-data', async (req, res) => {
+  try {
+    console.log("🟡 API /oi-data called");
+
+    const response = await axios.get('https://www.nseindia.com/option-chain');
+    console.log("✅ NSE response received");
+
+    const data = parseOIData(response.data); // Replace with your actual logic
+    console.log("✅ Parsed OI Data: ", data);
+
+    res.json(data);
+
+  } catch (err) {
+    console.error("❌ Error in /api/oi-data:", err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
